@@ -1,0 +1,41 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="sit-stand-log" target-property="time state">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    Sit: {{siting}} [s], Stand {{standing}} [s]
+  </template>
+
+  <script>
+    Polymer({
+      is: 'sit-stand-log',
+      properties: {
+        time: {
+          observer: "log"
+        },
+        state: {
+          observer: "log"
+        },
+        siting: { notify: true },
+        standing: { notify: true },
+        last: {},
+        stats: {value:{sit:0,stand:0}, notify:true}
+      },
+      log: function() {
+        if (Math.floor(this.last/1000)!=Math.floor(this.time/1000)) {
+          this.stats[this.state]++;
+        }
+        this.last=this.time;
+        this.siting=this.stats.sit;
+        this.standing=this.stats.stand;
+      },
+      created: function() {
+
+      }
+    });
+  </script>
+</dom-module>

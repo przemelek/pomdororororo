@@ -1,0 +1,60 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="notes-log">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <paper-input always-float-label label="Interruption" value="{{note}}" on-change="changed"></paper-input>
+    <template is="dom-repeat" items="{{notes}}">
+      <div>{{item.text}}<paper-button on-tap="tap">X</paper-button></div><hr />
+    </template>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'notes-log',
+      properties: {
+        note: {
+          value:"",
+          notify: true,
+          readOnly: false
+        },
+        notes: {
+          value:"",
+          notify: true,
+          readOnly: false
+        }
+      },
+      load: function() {
+        var notesStr = localStorage["notes"];
+        if (!notesStr) notesStr = "[]";
+        var list = JSON.parse(notesStr);
+        return list;
+      },
+      changed: function() {
+        var list = this.load();
+        list.push({text:this.note});
+        localStorage["notes"]=JSON.stringify(list);
+        this.notes=list;
+        this.note="";
+      },
+      ready: function() {
+        this.notes=this.load();
+      },
+      tap: function(e) {
+        console.log(e.model.item);
+        var newNotes = [];
+        for (var i=0; i<this.notes.length; i++) {
+          if (this.notes[i].text!=e.model.item.text) {
+            newNotes.push(this.notes[i]);
+          }
+        }
+        this.notes = newNotes;
+        localStorage["notes"]=JSON.stringify(this.notes);
+      }
+    });
+  </script>
+</dom-module>

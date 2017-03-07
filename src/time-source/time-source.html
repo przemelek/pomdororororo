@@ -1,0 +1,29 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="time-source" target-property="time">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'time-source',
+      properties: {
+        time: {
+          notify:true
+        }
+      },
+      created: function() {
+        var t = this;
+        var start = new Date();
+        setInterval(function() {
+          t.time = new Date()-start;
+        },250);
+      }
+    });
+  </script>
+</dom-module>

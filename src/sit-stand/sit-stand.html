@@ -1,0 +1,91 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="sit-stand" target-property="state">
+  <template>
+    <style>
+      :host {
+        display: none;
+      }
+      #videoElement {
+          width: 0px;
+          height: 0px;
+          /*background-color: #666;*/
+          visibility: hidden;
+          display:none;
+      }
+    </style>
+
+          <video autoplay="true" id="videoElement">
+
+          </video>
+
+      <canvas id="canvas" width="320" height="240" style="visibility:hidden;display:none"></canvas>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'sit-stand',
+      properties: {
+        state: {
+          notify:true
+        }
+      },
+      ready: function() {
+        var video = document.querySelector("#videoElement");
+        var canvas = document.getElementById("canvas");
+
+        navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+
+        if (navigator.getUserMedia) {
+            navigator.getUserMedia({video: true}, handleVideo, videoError);
+        }
+
+
+        function handleVideo(stream) {
+          var video = document.querySelector("#videoElement");
+            video.src = window.URL.createObjectURL(stream);
+        }
+
+        function videoError(e) {
+            // do something
+            console.log(e);
+        }
+
+        var t= this;
+        setInterval(function() {
+          var video = document.querySelector("#videoElement");
+          var canvas = document.getElementById("canvas");
+          var context = canvas.getContext('2d');
+          var width=320;
+          context.drawImage(video, 0, 0, 320, 240);
+          //var image = new Image();
+          //image.src = canvas.toDataURL("image/png");
+          var imgd = context.getImageData(0, 0, 320, 240);
+          var pix = imgd.data;
+          var count = 0;
+          var avg1 = 0;
+          var count2 = 0;
+          var avg2 = 0;
+          var lum = 0;
+          for (var idx=0; idx<pix.length; idx++) {
+            if ((idx%4)!=3) {
+              var z=Math.floor(idx/4);
+              var x=z%width;
+              var y=z/width;
+              if ((x>width/2) && (y<240/2)) {
+                avg1+=pix[idx];
+                count++;
+              } else { avg2+=pix[idx]; count2++; }
+            }
+          }
+          avg1/=count;
+          avg2/=count2;
+          var state=((avg1<avg2)?"sit":"stand");
+          t.state=state;
+          console.log(avg1+" "+avg2+" "+state);
+        },1000);
+      }
+    });
+  </script>
+</dom-module>

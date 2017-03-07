@@ -1,0 +1,35 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="work-log" target-property="time">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <paper-input always-float-label label="Works on" value="{{activity}}" on-change="changed"></paper-input>
+    <pomodoro-timer time={{time}} spent={{spent}}></pomodoro-timer>
+    <pomodoro-timer time={{spent}}></pomodoro-timer>
+    <time-source time={{time}}></time-source>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'work-log',
+      properties: {
+        activity:{value:""},
+      },
+      changed: function() {
+        var activity = this.activity;
+        this.activity="";
+
+      },
+      load: function() {
+        var notesStr = localStorage["activities"];
+        if (!notesStr) notesStr = "[]";
+        var list = JSON.parse(notesStr);
+        return list;
+      },
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,36 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="timer-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <time-source time={{time}}></time-source>
+    <table width="100%">
+      <tr><td valign="top" style="min-width:200px;width:200px;">
+          <h1>Pomodoro timer</h1>
+          <img src="../../img/pomodoro_timer.jpg" />
+          <pomodoro-timer time={{time}}></pomodoro-timer>
+      </td><td valign="top">
+          <h1>Interruptions</h1>
+          <img src="../../img/interruption.jpg" />
+    <notes-log></notes-log>
+    </td></tr></table>
+    <sit-stand style="display:none;" state={{state}}></sit-stand>
+    Now you <img height="100px" src="../../img/{{state}}.png" />
+    <sit-stand-log time={{time}} state={{state}}></sit-stand-log>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'timer-app',
+
+      properties: {
+      },
+
+    });
+  </script>
+</dom-module>
