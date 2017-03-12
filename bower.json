@@ -2,9 +2,10 @@
   "name": "toster",
   "main": "index.html",
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.4.0",
+    "iron-ajax": "PolymerElements/iron-ajax#~1.4.3",
     "paper-button": "PolymerElements/paper-button#^1.0.14",
-    "paper-input": "PolymerElements/paper-input#^1.1.23"
+    "paper-input": "PolymerElements/paper-input#^1.1.23",
+    "polymer": "Polymer/polymer#^1.4.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

@@ -7,7 +7,7 @@
 <meta content="What this page is about." name="description">
 <meta content="Display Webcam Stream" name="title">
 <title>Display Webcam Stream</title>
-
+<script src="util.js"></script>
 <style>
 #container {
     margin: 0px auto;
@@ -56,6 +56,11 @@ function $(id) { return document.getElementById(id); }
 
 function snap() {
   var context = canvas.getContext('2d');
+  canvas.toBlob(function(blob){
+      fetch("/save","POST",null,blob,function(answer) {
+        console.log(answer);
+      },true,false);
+  }, 'image/png');
   var width=320;
   context.drawImage(video, 0, 0, 320, 240);
   var imgd = context.getImageData(0, 0, 320, 240);
